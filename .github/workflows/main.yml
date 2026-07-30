@@ -27,8 +27,12 @@ jobs:
         APP_PARENT=$(find . -maxdepth 3 -name "app" -type d -exec dirname {} \; | head -n 1)
         cd "$APP_PARENT"
         
-        # إنشاء settings.gradle مبسط جداً
+        # إنشاء ملف settings.gradle
         echo "include ':app'" > settings.gradle
+
+        # إنشاء ملف gradle.properties وتفعيل AndroidX (حل المشكلة)
+        echo "android.useAndroidX=true" > gradle.properties
+        echo "android.enableJetifier=true" >> gradle.properties
 
         gradle wrapper
         chmod +x gradlew
