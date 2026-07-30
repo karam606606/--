@@ -27,7 +27,7 @@ jobs:
         APP_PARENT=$(find . -maxdepth 3 -name "app" -type d -exec dirname {} \; | head -n 1)
         cd "$APP_PARENT"
         
-        # إنشاء settings.gradle قياسي يدعم الإضافات الحديثة
+        # إنشاء settings.gradle مبسط
         cat << 'EOF' > settings.gradle
         pluginManagement {
             repositories {
