@@ -22,29 +22,13 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
 
-    - name: Prepare Root Project and Build
+    - name: Build APK
       run: |
         APP_PARENT=$(find . -maxdepth 3 -name "app" -type d -exec dirname {} \; | head -n 1)
         cd "$APP_PARENT"
         
-        # إنشاء settings.gradle مع تعريف مستودعات الإضافات
-        cat << 'EOF' > settings.gradle
-        pluginManagement {
-            repositories {
-                google()
-                mavenCentral()
-                gradlePluginPortal()
-            }
-        }
-        dependencyResolutionManagement {
-            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOSITORIES)
-            repositories {
-                google()
-                mavenCentral()
-            }
-        }
-        include ':app'
-        EOF
+        # إنشاء settings.gradle مبسط جداً
+        echo "include ':app'" > settings.gradle
 
         gradle wrapper
         chmod +x gradlew
