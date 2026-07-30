@@ -27,10 +27,29 @@ jobs:
         APP_PARENT=$(find . -maxdepth 3 -name "app" -type d -exec dirname {} \; | head -n 1)
         cd "$APP_PARENT"
         
-        # إنشاء ملف settings.gradle
-        echo "include ':app'" > settings.gradle
+        # إنشاء settings.gradle قياسي يدعم الإضافات الحديثة
+        cat << 'EOF' > settings.gradle
+        pluginManagement {
+            repositories {
+                google()
+                mavenCentral()
+                gradlePluginPortal()
+            }
+            plugins {
+                id 'com.android.application' version '8.2.2'
+                id 'org.jetbrains.kotlin.android' version '1.9.22'
+            }
+        }
+        dependencyResolutionManagement {
+            repositories {
+                google()
+                mavenCentral()
+            }
+        }
+        include ':app'
+        EOF
 
-        # إنشاء ملف gradle.properties وتفعيل AndroidX (حل المشكلة)
+        # إنشاء gradle.properties
         echo "android.useAndroidX=true" > gradle.properties
         echo "android.enableJetifier=true" >> gradle.properties
 
