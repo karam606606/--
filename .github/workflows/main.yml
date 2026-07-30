@@ -27,7 +27,7 @@ jobs:
         APP_PARENT=$(find . -maxdepth 3 -name "app" -type d -exec dirname {} \; | head -n 1)
         cd "$APP_PARENT"
         
-        # إنشاء settings.gradle مبسط
+        # إنشاء ملف settings.gradle
         cat << 'EOF' > settings.gradle
         pluginManagement {
             repositories {
@@ -49,13 +49,14 @@ jobs:
         include ':app'
         EOF
 
-        # إنشاء gradle.properties
+        # إعداد خصائص AndroidX
         echo "android.useAndroidX=true" > gradle.properties
         echo "android.enableJetifier=true" >> gradle.properties
 
-        gradle wrapper
+        # تحديد إصدار Gradle 8.5 المستقر والتوافقي
+        gradle wrapper --gradle-version 8.5
         chmod +x gradlew
-        ./gradlew :app:assembleDebug
+        ./gradlew :app:assembleDebug --no-daemon
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
